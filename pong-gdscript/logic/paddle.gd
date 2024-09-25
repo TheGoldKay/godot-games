@@ -28,3 +28,4 @@ func _on_area_entered(area):
 	if area.name == "Ball":
 		# Assign new direction.
 		area.direction = Vector2(_ball_dir, randf() * 2 - 1).normalized()
+		get_node("../Ball/ResetSoundPlayer").play()
