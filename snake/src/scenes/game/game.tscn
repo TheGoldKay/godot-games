@@ -104,6 +104,10 @@ action_mode = 0
 shortcut = ExtResource("10_8evq7")
 shortcut_in_tooltip = false
 
+[node name="TurnUp" type="Button" parent="Contents/Buttons"]
+layout_mode = 2
+shortcut_in_tooltip = false
+
 [connection signal="timeout" from="Start" to="." method="_on_start_timeout"]
 [connection signal="timeout" from="GameOver" to="." method="_on_game_over_timeout"]
 [connection signal="food_eaten" from="Contents/Frame/WorldContainer/World/Grid" to="." method="_on_grid_food_eaten"]

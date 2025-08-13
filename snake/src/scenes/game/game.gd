@@ -39,6 +39,9 @@ func _on_turn_left_pressed() -> void:
 func _on_turn_right_pressed() -> void:
 	%Grid.snake_turn_right()
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().quit()
 
 func _ready() -> void:
 	Global.score = 0
@@ -48,3 +51,7 @@ func _ready() -> void:
 # signal callbacks. This way you could, for example, export the project to a
 # mobile device and don't require a computer keyboard to play the game.
 # Just don't rely on it too much...
+
+
+func _on_turn_up_pressed() -> void:
+	pass # Replace with function body.

@@ -15,6 +15,14 @@ var _direction: Vector2i
 @onready
 var _segment_scene: PackedScene = get_meta("segment_scene")
 
+enum Direct {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+}
+
+var going: Direct
 
 ## Appends a new body segment, making it the new snake's head.
 func add_segment(at_cell: Vector2i) -> void:
@@ -43,7 +51,8 @@ func get_occupied_cells() -> Array[Vector2i]:
 ## Places the snake on the grid with the desired number of initial segments,
 ## starting at the given grid cell and facing the given direction.
 func initialize(size: int, at_cell: Vector2i, starting_direction: Vector2i) -> void:
-	_direction = starting_direction
+	_direction = Vector2i.DOWN #starting_direction
+	going = Direct.DOWN
 	for _i in size:
 		add_child(_instantiate_segment(at_cell))
 		at_cell -= _direction
@@ -52,16 +61,45 @@ func initialize(size: int, at_cell: Vector2i, starting_direction: Vector2i) -> v
 ## Sets the direction of the snake 90 degress to the left.
 func turn_left() -> void:
 	if _can_change_direction:
-		_direction = Vector2i(_direction.y, -_direction.x)
+		#_direction = Vector2i.LEFT #Vector2i(_direction.y, -_direction.x)
+		if not going == Direct.RIGHT and going == Direct.UP or going == Direct.DOWN:
+			print("left ", going, " ", Direct.UP, Direct.DOWN)
+			_direction = Vector2i.LEFT
+			going = Direct.LEFT
 		_can_change_direction = false
 
 
 ## Sets the direction of the snake 90 degress to the right.
 func turn_right() -> void:
 	if _can_change_direction:
-		_direction = Vector2i(-_direction.y, _direction.x)
+		#_direction = Vector2i.RIGHT #Vector2i(-_direction.y, _direction.x)
+		if not going == Direct.LEFT and going == Direct.UP or going == Direct.DOWN:
+			print("right ", going, " ", Direct.UP, Direct.DOWN)
+			_direction = Vector2i.RIGHT
+			going = Direct.RIGHT
 		_can_change_direction = false
 
+func turn_up() -> void:
+	if _can_change_direction:
+		#_direction = Vector2i.UP
+		if not going == Direct.DOWN and going == Direct.LEFT or going == Direct.RIGHT:
+			_direction = Vector2i.UP
+			going = Direct.UP
+		_can_change_direction = false
+
+func turn_down() -> void:
+	if _can_change_direction:
+		#_direction = Vector2i.DOWN
+		if going == Direct.LEFT or going == Direct.RIGHT:
+			_direction = Vector2i.DOWN
+			going = Direct.DOWN
+		_can_change_direction = false
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_up"):
+		turn_up()
+	if event.is_action_pressed("ui_down"):
+		turn_down()
 
 ## Moves the snake to the given grid cell.
 func walk(cell: Vector2i) -> void:
