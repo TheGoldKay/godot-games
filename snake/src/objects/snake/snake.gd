@@ -62,7 +62,7 @@ func initialize(size: int, at_cell: Vector2i, starting_direction: Vector2i) -> v
 func turn_left() -> void:
 	if _can_change_direction:
 		#_direction = Vector2i.LEFT #Vector2i(_direction.y, -_direction.x)
-		if not going == Direct.RIGHT and going == Direct.UP or going == Direct.DOWN:
+		if not going == Direct.RIGHT:
 			print("left ", going, " ", Direct.UP, Direct.DOWN)
 			_direction = Vector2i.LEFT
 			going = Direct.LEFT
@@ -73,7 +73,7 @@ func turn_left() -> void:
 func turn_right() -> void:
 	if _can_change_direction:
 		#_direction = Vector2i.RIGHT #Vector2i(-_direction.y, _direction.x)
-		if not going == Direct.LEFT and going == Direct.UP or going == Direct.DOWN:
+		if not going == Direct.LEFT:
 			print("right ", going, " ", Direct.UP, Direct.DOWN)
 			_direction = Vector2i.RIGHT
 			going = Direct.RIGHT
@@ -82,7 +82,7 @@ func turn_right() -> void:
 func turn_up() -> void:
 	if _can_change_direction:
 		#_direction = Vector2i.UP
-		if not going == Direct.DOWN and going == Direct.LEFT or going == Direct.RIGHT:
+		if not going == Direct.DOWN:
 			_direction = Vector2i.UP
 			going = Direct.UP
 		_can_change_direction = false
@@ -90,7 +90,7 @@ func turn_up() -> void:
 func turn_down() -> void:
 	if _can_change_direction:
 		#_direction = Vector2i.DOWN
-		if going == Direct.LEFT or going == Direct.RIGHT:
+		if not going == Direct.UP:
 			_direction = Vector2i.DOWN
 			going = Direct.DOWN
 		_can_change_direction = false
