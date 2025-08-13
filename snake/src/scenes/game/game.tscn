@@ -1,0 +1,113 @@
+[gd_scene load_steps=8 format=3 uid="uid://1k0lt3wxyf65"]
+
+[ext_resource type="Script" uid="uid://4jjijf454j3b" path="res://src/scenes/game/game.gd" id="1_kvssw"]
+[ext_resource type="PackedScene" uid="uid://knfxkxm4kd06" path="res://src/ui/components/score_label/score_label.tscn" id="1_woiv1"]
+[ext_resource type="PackedScene" uid="uid://dvnt620pknxus" path="res://src/objects/grid/grid.tscn" id="2_cdsqc"]
+[ext_resource type="PackedScene" uid="uid://dqqopaoiaiyyp" path="res://src/ui/components/pause_button/pause_button.tscn" id="4_s4lxf"]
+[ext_resource type="Shortcut" uid="uid://dfjrw7n4r222n" path="res://src/resources/shortcuts/enter.tres" id="7_gp3hb"]
+[ext_resource type="Shortcut" uid="uid://dslbuyyrt7vrx" path="res://src/resources/shortcuts/left.tres" id="8_xnm24"]
+[ext_resource type="Shortcut" uid="uid://civieku6xbe8g" path="res://src/resources/shortcuts/right.tres" id="10_8evq7"]
+
+[node name="Game" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kvssw")
+
+[node name="Start" type="Timer" parent="."]
+editor_description = "Waits briefly before the game starts."
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="GameOver" type="Timer" parent="."]
+editor_description = "Adds a little interval before the game cuts to the \"Game Over\" scene."
+wait_time = 2.0
+one_shot = true
+
+[node name="Contents" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Points" parent="Contents" instance=ExtResource("1_woiv1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Frame" type="PanelContainer" parent="Contents"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_type_variation = &"FramePanelContainer"
+
+[node name="WorldContainer" type="SubViewportContainer" parent="Contents/Frame"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 224)
+layout_mode = 2
+stretch = true
+
+[node name="World" type="SubViewport" parent="Contents/Frame/WorldContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(240, 224)
+render_target_update_mode = 4
+
+[node name="Grid" parent="Contents/Frame/WorldContainer/World" instance=ExtResource("2_cdsqc")]
+unique_name_in_owner = true
+visible = false
+grid_width = 15
+grid_height = 14
+
+[node name="StartOverlay" type="Label" parent="Contents/Frame"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Get Ready"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="PauseOverlay" type="Label" parent="Contents/Frame"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Game Paused"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Buttons" type="HBoxContainer" parent="Contents"]
+layout_mode = 2
+
+[node name="Pause" parent="Contents/Buttons" instance=ExtResource("4_s4lxf")]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+shortcut = ExtResource("7_gp3hb")
+
+[node name="TurnLeft" type="Button" parent="Contents/Buttons"]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"TurnLeftButton"
+action_mode = 0
+shortcut = ExtResource("8_xnm24")
+shortcut_in_tooltip = false
+
+[node name="TurnRight" type="Button" parent="Contents/Buttons"]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"TurnRightButton"
+action_mode = 0
+shortcut = ExtResource("10_8evq7")
+shortcut_in_tooltip = false
+
+[connection signal="timeout" from="Start" to="." method="_on_start_timeout"]
+[connection signal="timeout" from="GameOver" to="." method="_on_game_over_timeout"]
+[connection signal="food_eaten" from="Contents/Frame/WorldContainer/World/Grid" to="." method="_on_grid_food_eaten"]
+[connection signal="game_over" from="Contents/Frame/WorldContainer/World/Grid" to="." method="_on_grid_game_over"]
+[connection signal="toggled" from="Contents/Buttons/Pause" to="." method="_on_pause_toggled"]
+[connection signal="pressed" from="Contents/Buttons/TurnLeft" to="." method="_on_turn_left_pressed"]
+[connection signal="pressed" from="Contents/Buttons/TurnRight" to="." method="_on_turn_right_pressed"]
