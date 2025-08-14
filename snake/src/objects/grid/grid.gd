@@ -86,7 +86,8 @@ func start() -> void:
 
 ## Advances the game state.
 func step() -> void:
-	var cell: Vector2i = $Snake.get_next_step(grid_width, grid_height)
+	#var cell: Vector2i = $Snake.get_next_step(grid_width, grid_height)
+	var cell: Vector2i = auto_move()
 	if $Snake.will_collide(cell):
 		$Timer.stop()
 		game_over.emit()
@@ -96,7 +97,27 @@ func step() -> void:
 		food_eaten.emit()
 	else:
 		$Snake.walk(cell)
+		#auto_move()
 
+func auto_move() -> Vector2i:
+	var food: Vector2i = $Food.cell 
+	var head: Vector2i = $Snake.get_child(0).cell
+	var dx = 0
+	var dy = 0
+	if head.x > food.x:
+		dx = -1
+	elif head.x < food.x:
+		dx = 1
+	elif head.y > food.y:
+		dy = -1
+	elif head.y < food.y:
+		dy = 1
+	return $Snake.get_next_auto_step(grid_width, grid_height, dx, dy)
+	
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_page_up"):
+		print($Food.cell) # (x, y)
 
 ## Builds an array of grid cells to be queried later.
 func _get_cell_coordinates_list() -> Array[Vector2i]:

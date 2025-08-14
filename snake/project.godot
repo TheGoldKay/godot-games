@@ -32,6 +32,10 @@ window/size/viewport_height=288
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 
+[dotnet]
+
+project/assembly_name="snake.gd"
+
 [gui]
 
 theme/custom="uid://dgg2l0ngkt4y8"

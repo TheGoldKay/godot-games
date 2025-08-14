@@ -39,6 +39,36 @@ func get_next_step(grid_width: int, grid_height: int) -> Vector2i:
 	var y := wrapi(cell.y + _direction.y, 0, grid_height)
 	return Vector2i(x, y)
 
+func get_dir(x_dir: int, y_dir: int) -> Vector2i:
+	if x_dir == -1: 
+		if going == Direct.RIGHT:
+			x_dir = 0
+		else:
+			going = Direct.LEFT
+	elif x_dir == 1:
+		if going == Direct.LEFT:
+			x_dir = 0
+		else:
+			going = Direct.RIGHT
+	if y_dir == -1: 
+		if going == Direct.DOWN:
+			y_dir = 0
+		else:
+			going = Direct.UP
+	elif y_dir == 1:
+		if going == Direct.UP:
+			y_dir = 0
+		else:
+			going = Direct.DOWN 
+	return Vector2i(x_dir, y_dir)
+	
+func get_next_auto_step(grid_width: int, grid_height: int, x_dir: int, y_dir: int) -> Vector2i:
+	var cell: Vector2i = get_child(0).cell
+	var d: Vector2i = get_dir(x_dir, y_dir)
+	var x := wrapi(cell.x + d.x, 0, grid_width)
+	var y := wrapi(cell.y + d.y, 0, grid_height)
+	return Vector2i(x, y)
+
 
 ## Returns the list of cells occupied by the snake body on the grid.
 func get_occupied_cells() -> Array[Vector2i]:

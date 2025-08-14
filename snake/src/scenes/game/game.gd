@@ -2,7 +2,8 @@ extends MarginContainer
 
 
 func _on_game_over_timeout() -> void:
-	get_tree().change_scene_to_file("res://src/scenes/game_over/game_over.tscn")
+	
+	get_tree().change_scene_to_file("res://src/scenes/game/game.tscn")#("res://src/scenes/game_over/game_over.tscn")
 
 
 func _on_grid_food_eaten() -> void:
@@ -42,6 +43,7 @@ func _on_turn_right_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+
 
 func _ready() -> void:
 	Global.score = 0
