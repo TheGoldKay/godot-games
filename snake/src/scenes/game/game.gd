@@ -46,7 +46,17 @@ func _input(event: InputEvent) -> void:
 
 
 func _ready() -> void:
+	Global.high_score = get_high_score()
 	Global.score = 0
+
+func get_high_score() -> int:
+	var data = Data.load_json("user://high_score.json")
+	var high_score = 0;
+	if data is Dictionary:
+		var value = data.get("high_score")
+		if value is float:  # NOTE: JSON numbers are always `float`.
+			high_score = int(value)
+	return high_score
 
 # Still looking for any player input handling logic, heh?
 # That is fully accomplished by the buttons shortcuts and their `pressed`

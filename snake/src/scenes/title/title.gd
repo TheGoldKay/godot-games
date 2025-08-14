@@ -10,5 +10,4 @@ func _on_quit_pressed() -> void:
 
 
 func _ready() -> void:
-	Global.high_score = 0
-	#%HighScore.count = Global.high_score
+	%HighScore.count = Global.high_score
