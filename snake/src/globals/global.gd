@@ -8,7 +8,7 @@ const DEFAULT_HIGH_SCORE: int = 20
 const HIGH_SCORE_PATH: String = "user://high_score.json"
 
 ## Current game session score.
-var score: int = 0:
+var score: int = 0: 
 	set(value):
 		score = value
 		high_score = maxi(score, high_score)
