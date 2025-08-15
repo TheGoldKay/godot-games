@@ -48,6 +48,7 @@ func _input(event: InputEvent) -> void:
 func _ready() -> void:
 	Global.high_score = get_high_score()
 	Global.score = 0
+	randomize()
 
 func get_high_score() -> int:
 	var data = Data.load_json("user://high_score.json")

@@ -39,6 +39,30 @@ func get_next_step(grid_width: int, grid_height: int) -> Vector2i:
 	var y := wrapi(cell.y + _direction.y, 0, grid_height)
 	return Vector2i(x, y)
 
+func get_allowed_move(next_x: int, next_y: int, gw: int, gh: int) -> Vector2i:
+	var body: Array[Vector2i]= get_occupied_cells()
+	var head: Vector2i = body[0]
+	var next_pos := Vector2i(next_x, next_y)
+	if not next_pos in body:
+		return next_pos
+	else:
+		var x = [wrapi(head.x + 1, 0, gw),wrapi(head.x - 1, 0, gw)]
+		var y = [wrapi(head.y + 1, 0, gh),wrapi(head.y - 1, 0, gh)]
+		var allowed = []
+		for dx in x:
+			for dy in y:
+				var p = Vector2i(dx, dy)
+				if not p in body:
+					allowed.append(p)
+		if allowed:
+			#var rand_i = randi() % allowed.size()
+			#return allowed[rand_i]
+			allowed.shuffle()
+			for pos in allowed:
+				if pos.x == head.x or pos.y == head.y:
+					return pos
+		return next_pos
+		
 func get_dir(x_dir: int, y_dir: int) -> Vector2i:
 	if x_dir == -1: 
 		if going == Direct.RIGHT:
@@ -67,7 +91,7 @@ func get_next_auto_step(grid_width: int, grid_height: int, x_dir: int, y_dir: in
 	var d: Vector2i = get_dir(x_dir, y_dir)
 	var x := wrapi(cell.x + d.x, 0, grid_width)
 	var y := wrapi(cell.y + d.y, 0, grid_height)
-	return Vector2i(x, y)
+	return get_allowed_move(x, y, grid_width, grid_height)
 
 
 ## Returns the list of cells occupied by the snake body on the grid.
