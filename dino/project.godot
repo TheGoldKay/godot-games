@@ -8,9 +8,17 @@
 
 config_version=5
 
+[addons]
+
+markdown_book/docs_folder=""
+
 [application]
 
 config/name="dino_run_tut"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/wakatime/plugin.cfg")

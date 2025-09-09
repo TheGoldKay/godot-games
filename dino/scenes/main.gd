@@ -146,6 +146,7 @@ func adjust_difficulty():
 
 func game_over():
 	check_high_score()
-	get_tree().paused = true
-	game_running = false
-	$GameOver.show()
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	#get_tree().paused = true
+	#game_running = false
+	#$GameOver.show()
